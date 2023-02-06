@@ -5,7 +5,7 @@ const getPosts = async (req, res) => {
     const { userId } = req.body;
     try {
         if (userId) {
-            const posts = await BlogPost.find({ userId });
+            const posts = await BlogPost.find({ userId }).sort({ createdAt: 'desc'}).exec();
             res.send(posts);
         }
     } catch (error) {

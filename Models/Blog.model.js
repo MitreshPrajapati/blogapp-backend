@@ -7,8 +7,8 @@ const blogSchema = mongoose.Schema({
     },
     title: String,
     desc: String,
-    images: []
-}, { timeStamp: true })
+    images: String
+}, { timestamps: true })
 
 
 const BlogPost = mongoose.model('post', blogSchema);

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     following:[],
     followers:[]
 
-}, { timeStamp: true })
+}, { timestamps: true })
 
 const UserModel = mongoose.model('user', userSchema);
 
