@@ -5,7 +5,7 @@ const getPosts = async (req, res) => {
     const { userId } = req.body;
     try {
         if (userId) {
-            const posts = await BlogPost.find({ userId }).sort({ createdAt: 'desc'}).exec();
+            const posts = await BlogPost.find({ userId }).sort({ createdAt: 'desc'});
             res.send(posts);
         }
     } catch (error) {
@@ -16,8 +16,8 @@ const getPosts = async (req, res) => {
 // create new post 
 const createPost = async (req, res) => {
     const { userId } = req.body;
-    const arr = ["https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg"];
-    req.body.images = arr;
+    
+    // req.body.images = "https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg";
     const new_Post = new BlogPost(req.body)
     await new_Post.save();
     res.send("Posted successfully.")
