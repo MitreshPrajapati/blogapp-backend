@@ -44,7 +44,7 @@ const LoginFn = async (req, res) => {
                     res.send({ message: err })
                 } else {
                     if (result) {
-                        const token = jwt.sign({ userId: user._id }, process.env.SECRETKEY)
+                        const token = jwt.sign({ userId: user._id, username: user.username }, process.env.SECRETKEY)
                         res.send({ user, "token": token })
                     } else {
                         res.send({ message: " Wrong credintials" })

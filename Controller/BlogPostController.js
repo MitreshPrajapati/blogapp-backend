@@ -15,7 +15,7 @@ const getPosts = async (req, res) => {
 
 // create new post 
 const createPost = async (req, res) => {
-    const { userId } = req.body;
+    const { userId, username } = req.body;
     
     // req.body.images = "https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg";
     const new_Post = new BlogPost(req.body)
