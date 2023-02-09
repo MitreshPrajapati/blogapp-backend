@@ -9,7 +9,7 @@ const authentication = (req, res, next) => {
             var decoded = jwt.verify(token, process.env.SECRETKEY);
             // req.body.email = decoded.email
             req.body.userId = decoded.userId
-            req.body.username = decoded.username
+            req.body.username = decoded.user_name
             next()
         } else {
             res.send("User not authenticated.")

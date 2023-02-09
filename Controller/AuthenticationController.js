@@ -5,7 +5,7 @@ const { UserModel } = require("../Models/User.model");
 require('dotenv').config();
 
 const SignupFn = async (req, res) => {
-    const { email, password } = req.body;
+    const {user_name, email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (user) {
@@ -19,6 +19,7 @@ const SignupFn = async (req, res) => {
             }
 
             const newUser = new UserModel({
+                user_name,
                 email,
                 password: hashedPassword
             })
@@ -44,7 +45,7 @@ const LoginFn = async (req, res) => {
                     res.send({ message: err })
                 } else {
                     if (result) {
-                        const token = jwt.sign({ userId: user._id, user_name: user.username }, process.env.SECRETKEY)
+                        const token = jwt.sign({ userId: user._id, user_name: user.user_name }, process.env.SECRETKEY)
                         res.send({ user, "token": token })
                     } else {
                         res.send({ message: " Wrong credintials" })
