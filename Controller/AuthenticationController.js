@@ -7,28 +7,35 @@ require('dotenv').config();
 const SignupFn = async (req, res) => {
     const { user_name, email, password } = req.body;
 
-    const user = await UserModel.findOne({ email });
-    if (user) {
-        res.send({ message: "User already exists, Please Login" });
+    if (email.includes("@gmail.com") ||
+        email.includes("@ymail.com") ||
+        email.includes("@hotmail.com")) {
+        const user = await UserModel.findOne({ email });
+        if (user) {
+            res.send({ message: "User already exists, Please Login" });
+        } else {
+
+            bcrypt.hash(password, Number(process.env.ROUND), async function (err, hashedPassword) {
+
+                if (err) {
+                    res.send({ message: err.message })
+                }
+
+                const newUser = new UserModel({
+                    user_name,
+                    email,
+                    password: hashedPassword
+                })
+
+                await newUser.save();
+                res.send({ message: "User registred successfully." });
+
+            });
+        }
     } else {
-
-        bcrypt.hash(password, Number(process.env.ROUND), async function (err, hashedPassword) {
-
-            if (err) {
-                res.send({ message: err.message })
-            }
-
-            const newUser = new UserModel({
-                user_name,
-                email,
-                password: hashedPassword
-            })
-
-            await newUser.save();
-            res.send({ message: "User registred successfully." });
-
-        });
+       res.send({message:"Incorrect email type."})
     }
+
 }
 
 
@@ -60,7 +67,7 @@ const LoginFn = async (req, res) => {
                 res.send({ message: "User doesn't exists, Please Signup/ Register first." })
             }
         } else {
-            res.send({ message: "Email type is not correct." })
+            res.send({ message: "Incorrect email type." })
         }
 
 
