@@ -5,7 +5,7 @@ const { UserModel } = require("../Models/User.model");
 require('dotenv').config();
 
 const SignupFn = async (req, res) => {
-    const {user_name, email, password } = req.body;
+    const { user_name, email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
     if (user) {
@@ -25,7 +25,7 @@ const SignupFn = async (req, res) => {
             })
 
             await newUser.save();
-            res.send({message:"User registred successfully."});
+            res.send({ message: "User registred successfully." });
 
         });
     }
@@ -36,25 +36,33 @@ const LoginFn = async (req, res) => {
 
     try {
         const { email, password } = req.body;
-        const user = await UserModel.findOne({ email });
+        if (email.includes("@gmail.com") ||
+            email.includes("@ymail.com") ||
+            email.includes("@hotmail.com")
+        ) {
+            const user = await UserModel.findOne({ email });
 
 
-        if (user) {
-            bcrypt.compare(password, user.password, function (err, result) {
-                if (err) {
-                    res.send({ message: err })
-                } else {
-                    if (result) {
-                        const token = jwt.sign({ userId: user._id, user_name: user.user_name }, process.env.SECRETKEY)
-                        res.send({ user, "token": token })
+            if (user) {
+                bcrypt.compare(password, user.password, function (err, result) {
+                    if (err) {
+                        res.send({ message: err })
                     } else {
-                        res.send({ message: " Wrong credintials" })
+                        if (result) {
+                            const token = jwt.sign({ userId: user._id, user_name: user.user_name }, process.env.SECRETKEY)
+                            res.send({ user, "token": token })
+                        } else {
+                            res.send({ message: " Wrong credintials" })
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                res.send({ message: "User doesn't exists, Please Signup/ Register first." })
+            }
         } else {
-            res.send({ message: "User doesn't exists, Please Signup/ Register first." })
+            res.send({ message: "Email type is not correct." })
         }
+
 
     } catch (error) {
         res.send({ message: error.message })
@@ -62,6 +70,7 @@ const LoginFn = async (req, res) => {
 }
 
 
-module.exports = { 
+module.exports = {
     SignupFn,
-    LoginFn }
+    LoginFn
+}
