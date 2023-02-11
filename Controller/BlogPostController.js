@@ -4,10 +4,10 @@ const { BlogPost } = require("../Models/Blog.model");
 const getPosts = async (req, res) => {
     const { userId } = req.body;
     try {
-        if (userId) {
-            const posts = await BlogPost.find({ userId }).sort({ createdAt: 'desc'});
+        
+            const posts = await BlogPost.find().sort({ createdAt: 'desc'});
             res.send(posts);
-        }
+        
     } catch (error) {
         res.send({ message: err })
     }
