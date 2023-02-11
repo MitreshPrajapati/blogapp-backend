@@ -1,6 +1,17 @@
 const { BlogPost } = require("../Models/Blog.model");
 
 // current user all  postes 
+const getPostById = async(req, res)=>{
+    const {id} = req.params;
+    if (id) {
+        const blogPost = await BlogPost
+            .findById(id);
+        res.send(blogPost)
+    } else {
+        res.send("Post doesn't exists.")
+    }
+}
+
 const getPosts = async (req, res) => {
     const { userId } = req.body;
     try {
@@ -55,6 +66,7 @@ const updatePost = async (req, res) => {
 
 
 module.exports = {
+    getPostById,
     getPosts,
     createPost,
     deletePost,
