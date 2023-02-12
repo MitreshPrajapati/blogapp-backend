@@ -8,8 +8,9 @@ const { BlogPost } = require('../Models/Blog.model');
 const { createPost,
      getPosts,
      updatePost,
-     deletePost, 
-     getPostById} = require('../Controller/BlogPostController');
+     deletePost,
+     getPostById,
+     getOwnPostsOnly } = require('../Controller/BlogPostController');
 
 
 const blogPostRouter = Router();
@@ -19,14 +20,15 @@ const blogPostRouter = Router();
 // })
 
 blogPostRouter.get('/posts', getPosts);
-blogPostRouter.get('/posts/:id',getPostById);
+blogPostRouter.get('/own/posts', getOwnPostsOnly);
+blogPostRouter.get('/posts/:id', getPostById);
 blogPostRouter.post('/create/post', createPost);
 blogPostRouter.patch('/update/:id', updatePost);
 blogPostRouter.delete('/delete/:id', deletePost);
 
 
 
-module.exports = {blogPostRouter}
+module.exports = { blogPostRouter }
 
 
 

@@ -16,7 +16,7 @@ const getPostById = async(req, res)=>{
 
 // getAllPosts
 const getPosts = async (req, res) => {
-    const { userId } = req.body;
+    // const { userId } = req.body;
     try {
         
             const posts = await BlogPost.find().sort({ createdAt: 'desc'});
@@ -27,11 +27,22 @@ const getPosts = async (req, res) => {
     }
 }
 
+const getOwnPostsOnly = async (req, res) => {
+    const { userId } = req.body;
+    try {
+        
+            const posts = await BlogPost.find({userId}).sort({ createdAt: 'desc'});
+            res.send(posts);
+        
+    } catch (error) {
+        res.send({ message: err })
+    }
+}
+
 // create new post 
 const createPost = async (req, res) => {
     const { userId, user_name } = req.body;
-    console.log(req.body);
-    // req.body.images = "https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg";
+    // console.log(req.body);
     const new_Post = new BlogPost(req.body)
     await new_Post.save();
     res.send("Posted successfully.")
@@ -58,10 +69,9 @@ const updatePost = async (req, res) => {
 
     const post = await BlogPost
         .findByIdAndUpdate(id, update);
-    const updated=    await BlogPost.findById(id);
-    console.log(updated, post);
+    
     if (post) {
-        // post = { ...post, ...req.body }
+        
         res.send("Post updated.")
     } else {
         res.send("Post doesn't exists.")
@@ -75,5 +85,6 @@ module.exports = {
     getPosts,
     createPost,
     deletePost,
-    updatePost
+    updatePost,
+    getOwnPostsOnly
 }
