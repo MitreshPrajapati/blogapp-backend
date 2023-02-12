@@ -53,13 +53,15 @@ const deletePost = async (req, res) => {
 // update own post 
 const updatePost = async (req, res) => {
     const { id } = req.params;
-    const filter = { _id: id, userId: req.body.userId };
+   
     const update = req.body;
 
     const post = await BlogPost
-        .findOneAndUpdate(filter, update);
+        .findByIdAndUpdate(id, update);
+    const updated=    await BlogPost.findById(id);
+    console.log(updated, post);
     if (post) {
-        post = { ...post, ...req.body }
+        // post = { ...post, ...req.body }
         res.send("Post updated.")
     } else {
         res.send("Post doesn't exists.")
