@@ -1,6 +1,8 @@
 const { BlogPost } = require("../Models/Blog.model");
 
 // current user all  postes 
+
+// get specific Post by post id
 const getPostById = async(req, res)=>{
     const {id} = req.params;
     if (id) {
@@ -12,6 +14,7 @@ const getPostById = async(req, res)=>{
     }
 }
 
+// getAllPosts
 const getPosts = async (req, res) => {
     const { userId } = req.body;
     try {

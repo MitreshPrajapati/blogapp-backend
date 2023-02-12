@@ -21,7 +21,7 @@ const blogPostRouter = Router();
 blogPostRouter.get('/posts', getPosts);
 blogPostRouter.get('/posts/:id',getPostById);
 blogPostRouter.post('/create/post', createPost);
-blogPostRouter.put('/update/:id', updatePost);
+blogPostRouter.patch('/update/:id', updatePost);
 blogPostRouter.delete('/delete/:id', deletePost);
 
 

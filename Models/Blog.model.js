@@ -11,7 +11,10 @@ const blogSchema = mongoose.Schema({
     },
     title: String,
     desc: String,
-    images: String
+    images: String,
+    likes: {
+        type: Array
+    }
 }, { timestamps: true })
 
 
