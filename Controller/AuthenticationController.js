@@ -3,9 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const { UserModel } = require("../Models/User.model");
 require('dotenv').config();
-const upload = require('../multer');
-const cloudinary = require('../cloudinary');
-const fs = require('fs');
+
 
 const SignupFn = async (req, res) => {
     const { user_name, email, password } = req.body;
@@ -17,11 +15,12 @@ const SignupFn = async (req, res) => {
         if (user) {
             res.send({ message: "User already exists, Please Login" });
         } else {
-            const uploader = async(path)=> await cloudinary.uploads(path,'Images');
-            const files = req.files;
-            const {path} = files[0];
-            let newPath = await uploader(path);
-            fs.unlinkSync(path);
+            // const uploader = async(path) => await cloudinary.uploads(path, 'Images')
+            // const files = req.files;
+            // console.log(uploader);
+            // const path = req.file.image;
+            // let newPath = await uploader(path);
+            // fs.unlinkSync(path);
 
 
             bcrypt.hash(password, Number(process.env.ROUND), async function (err, hashedPassword) {
@@ -31,7 +30,7 @@ const SignupFn = async (req, res) => {
                 }
 
                 const newUser = new UserModel({
-                    avatar:newPath,
+                    avatar: newPath,
                     user_name,
                     email,
                     password: hashedPassword
@@ -43,7 +42,7 @@ const SignupFn = async (req, res) => {
             });
         }
     } else {
-       res.send({message:"Incorrect email type."})
+        res.send({ message: "Incorrect email type." })
     }
 
 }

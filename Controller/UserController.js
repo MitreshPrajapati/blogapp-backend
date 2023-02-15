@@ -1,6 +1,9 @@
 const { UserModel } = require("../Models/User.model");
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+// const upload  = require('../multer');
+// const cloudinary = require('../cloudinary');
+// const fs = require('fs');
 
 const getUserById = async (req, res) => {
     const { id } = req.params;
@@ -52,22 +55,53 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
         let user = await UserModel.findById(id);
-        if(id === req.body.userId || user._doc.role === "admin") {
+        if (id === req.body.userId || user._doc.role === "admin") {
             await UserModel.findByIdAndDelete(id);
-            res.send({ message: "User deleted"});
-        }else{
-            res.send({ message: "User not Authorised."});
+            res.send({ message: "User deleted" });
+        } else {
+            res.send({ message: "User not Authorised." });
         }
     } catch (error) {
-        res.send({ message: error});
+        res.send({ message: error });
     }
 }
+
+// const updateProfilePic = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const uploader = async (path) => await cloudinary.uploads(path, 'Images');
+//         let urls = [];
+        
+//         const files = req.files;
+//         for (const file in files) {
+//             const { path } = file;
+//             const newPath = await uploader(path);
+//             urls.push(newPath);
+//             // urls = newPath
+//             fs.unlinkSync(path);
+//         }
+
+
+//         let user = await UserModel.findById(id);
+//         if (id === req.body.userId || user._doc.role === "admin") {
+//             await UserModel.findByIdAndUpdate(id, { avatar: urls[0]?.url }, { new: true });
+//             res.send({ message: "User Profile Updated" });
+//         } else {
+//             res.send({ message: "User not Authorised." });
+//         }
+//     } catch (error) {
+//         res.send({ message: error });
+//     }
+// }
+
+
 module.exports = {
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    // updateProfilePic
 }

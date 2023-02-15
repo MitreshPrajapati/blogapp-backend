@@ -13,8 +13,8 @@ cloudinary.config({
 
 exports.uploads = (file, folder)=>{
     return new Promise(resolve =>{
-        cloudinary.uploader.upload(file, (result)=>{
-            resolve({
+       cloudinary.uploader.upload(file, (result)=>{
+           resolve({
                 url: result.url,
                 id: result.public_id
             })
@@ -24,3 +24,5 @@ exports.uploads = (file, folder)=>{
         })
     })
 }
+
+// module.exports = {uploads}
