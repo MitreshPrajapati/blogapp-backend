@@ -5,6 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 require('dotenv').config();
+// const cors = require('cors');
+// porfileUrlRouter.use(cors());
 
 const upload  = require('../multer');
 const cloudinary = require('../cloudinary');

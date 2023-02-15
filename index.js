@@ -20,6 +20,17 @@ app.use(bodyParser.json());
 
 require('dotenv').config();
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
+
+app.use('/profileUrl',porfileUrlRouter);
+
 
 app.get('/', (req, res) => {
     res.send("Welcome to Blog App");
@@ -28,7 +39,6 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/blog',authentication, blogPostRouter);
-app.use('/profileUrl',porfileUrlRouter);
 
 const PORT = process.env.PORT || 7070
 app.listen(PORT, async()=>{
