@@ -11,10 +11,12 @@ const { createPost,
      deletePost,
      getPostById,
      getOwnPostsOnly } = require('../Controller/BlogPostController');
+const upload = require('../multer');
 
 
 const blogPostRouter = Router();
-
+blogPostRouter.use(bodyParser.json());
+blogPostRouter.use(bodyParser.urlencoded({ extended: false }));
 // blogPostRouter.get('/', async(req, res)=>{
 //     res.send("post");
 // })
@@ -22,7 +24,7 @@ const blogPostRouter = Router();
 blogPostRouter.get('/posts', getPosts);
 blogPostRouter.get('/own/posts', getOwnPostsOnly);
 blogPostRouter.get('/posts/:id', getPostById);
-blogPostRouter.post('/create/post', createPost);
+blogPostRouter.post('/create/post',upload.array('image'), createPost);
 blogPostRouter.patch('/update/:id', updatePost);
 blogPostRouter.delete('/delete/:id', deletePost);
 
