@@ -8,6 +8,7 @@ const authentication = (req, res, next) => {
         if (token) {
             var decoded = jwt.verify(token, process.env.SECRETKEY);
             // req.body.email = decoded.email
+            // console.log("from middleware auth",req)
             req.body.userId = decoded.userId
             req.body.username = decoded.user_name
             next()
