@@ -42,24 +42,24 @@ const getOwnPostsOnly = async (req, res) => {
 // create new post 
 const createPost = async (req, res) => {
     const { userId, user_name } = req.body;
-    const uploader = async (path) => await cloudinary.uploads(path, 'Images')
+    // const uploader = async (path) => await cloudinary.uploads(path, 'Images')
     // console.log(req)
-    if (req.method === 'POST') {
+    // if (req.method === 'POST') {
 
-        const urls = [];
-        const files = req.files;
+        // const urls = [];
+        // const files = req.files;
 
-        const { path } = req.files[0];
-        const newPath = await uploader(path);
-        urls.push(newPath);
-        fs.unlinkSync(path);
-        
+        // const { path } = req.files[0];
+        // const newPath = await uploader(path);
+        // urls.push(newPath);
+        // fs.unlinkSync(path);
+
         // console.log(req.body);
-        req.body.images = urls[0]?.url;
+        // req.body.images = urls[0]?.url;
         const new_Post = new BlogPost(req.body)
         await new_Post.save();
         res.send("Posted successfully.")
-    }
+    // }
 }
 
 // delete own post  

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { Connection } = require('./Config/db');
 const bodyParser = require('body-parser');
+
 //middlewares
 const { authentication } = require('./Middlewares/authentication');
 
@@ -10,15 +11,16 @@ const { authRouter } = require('./Routes/Auth.route');
 const { blogPostRouter } = require('./Routes/BlogPost.route');
 const { userRouter } = require('./Routes/User.route');
 const { porfileUrlRouter } = require('./Routes/ProfileUrl');
-
+require('dotenv').config();
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
-require('dotenv').config();
+
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
