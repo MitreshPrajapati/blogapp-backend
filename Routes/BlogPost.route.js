@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const express = require('express');
-
+const bodyParser = require('body-parser');
 // required Models
 const { BlogPost } = require('../Models/Blog.model');
 
