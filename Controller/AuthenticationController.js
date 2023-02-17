@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 const SignupFn = async (req, res) => {
-    const { user_name, email, password } = req.body;
+    const { user_name, email, password, avatar } = req.body;
 
     if (email.includes("@gmail.com") ||
         email.includes("@ymail.com") ||
@@ -30,7 +30,7 @@ const SignupFn = async (req, res) => {
                 }
 
                 const newUser = new UserModel({
-                    avatar: newPath,
+                    avatar,
                     user_name,
                     email,
                     password: hashedPassword
