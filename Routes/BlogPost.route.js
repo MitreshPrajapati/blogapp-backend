@@ -2,7 +2,7 @@ const { Router } = require('express');
 const express = require('express');
 const bodyParser = require('body-parser');
 // required Models
-const { BlogPost } = require('../Models/Blog.model');
+// const { BlogPost } = require('../Models/Blog.model');
 
 //controllers
 const { createPost,
@@ -10,7 +10,9 @@ const { createPost,
      updatePost,
      deletePost,
      getPostById,
-     getOwnPostsOnly } = require('../Controller/BlogPostController');
+     getOwnPostsOnly, 
+     getUserPosts,
+     handlePostLike} = require('../Controller/BlogPostController');
 const upload = require('../multer');
 
 
@@ -20,10 +22,13 @@ blogPostRouter.use(bodyParser.urlencoded({ extended: false }));
 
 
 blogPostRouter.get('/posts', getPosts);
+blogPostRouter.get('/userposts', getUserPosts);
 blogPostRouter.get('/own/posts', getOwnPostsOnly);
 blogPostRouter.get('/posts/:id', getPostById);
 blogPostRouter.post('/create/post', createPost);
 blogPostRouter.patch('/update/:id', updatePost);
+blogPostRouter.patch('/like/:id', handlePostLike);
+blogPostRouter.patch('/unlike/:id', handlePostLike);
 blogPostRouter.delete('/delete/:id', deletePost);
 
 

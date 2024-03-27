@@ -20,10 +20,28 @@ const getPosts = async (req, res) => {
     try {
 
         const posts = await BlogPost.find().sort({ createdAt: 'desc' });
+
+        // if (posts.length > 0) {
         res.send(posts);
+        // }
+        // res.send({ message: "No posts found." })
 
     } catch (error) {
-        res.send({ message: err })
+        res.send({ message: error })
+    }
+}
+
+//getUserPosts
+const getUserPosts = async (req, res) => {
+    // const id = JSON.parse(localStorage.getItem("reqUser"));
+    try {
+        const posts = await BlogPost.find().sort({ createdAt: 'desc' });
+        // if (posts.length > 0) {
+        res.send(posts);
+        // }
+        // res.send({ message: "No posts found." })
+    } catch (error) {
+        res.send({ message: error })
     }
 }
 
@@ -46,21 +64,21 @@ const createPost = async (req, res) => {
     // console.log(req)
     // if (req.method === 'POST') {
 
-        // const urls = [];
-        // const files = req.files;
+    // const urls = [];
+    // const files = req.files;
 
-        // const { path } = req.files[0];
-        // const newPath = await uploader(path);
-        // urls.push(newPath);
-        // fs.unlinkSync(path);
+    // const { path } = req.files[0];
+    // const newPath = await uploader(path);
+    // urls.push(newPath);
+    // fs.unlinkSync(path);
 
-        // console.log(req.body);
-        // req.body.images = req.body.avatar;
-        // const {avatar, ...otherdetails}= req.body;
-        // console.log(otherdetails);
-        const new_Post = new BlogPost(req.body)
-        await new_Post.save();
-        res.send("Posted successfully.")
+    // console.log(req.body);
+    // req.body.images = req.body.avatar;
+    // const {avatar, ...otherdetails}= req.body;
+    // console.log(otherdetails);
+    const new_Post = new BlogPost(req.body)
+    await new_Post.save();
+    res.send("Posted successfully.")
     // }
 }
 
@@ -94,12 +112,33 @@ const updatePost = async (req, res) => {
 
 }
 
+const handlePostLike = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.body.userId;
+    const post = await BlogPost.findById(id);
+    if (post) {
+        let alreadyLiked = post.likes.includes(userId);
+        if (!alreadyLiked) {
+            await post.updateOne({ $push: { likes: userId } })
+            res.send("Post Liked.")
+        } else {
+            await post.updateOne({ $pull: { likes: userId } })
+            res.send("Post Unliked.")
+        }
+    } else {
+        res.send("Post doesn't exists.")
+    }
+
+}
+
 
 module.exports = {
     getPostById,
     getPosts,
+    getUserPosts,
     createPost,
     deletePost,
     updatePost,
-    getOwnPostsOnly
+    getOwnPostsOnly,
+    handlePostLike,
 }

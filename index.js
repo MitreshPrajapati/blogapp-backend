@@ -39,8 +39,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRouter);
-app.use('/user', userRouter);
-app.use('/blog',authentication, blogPostRouter);
+app.use('/user', authentication, userRouter);
+app.use('/blog', authentication, blogPostRouter);
 
 const PORT = process.env.PORT || 7070
 app.listen(PORT, async()=>{

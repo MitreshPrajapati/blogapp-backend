@@ -70,38 +70,63 @@ const deleteUser = async (req, res) => {
     }
 }
 
-// const updateProfilePic = async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const uploader = async (path) => await cloudinary.uploads(path, 'Images');
-//         let urls = [];
-        
-//         const files = req.files;
-//         for (const file in files) {
-//             const { path } = file;
-//             const newPath = await uploader(path);
-//             urls.push(newPath);
-//             // urls = newPath
-//             fs.unlinkSync(path);
-//         }
+const followUser = async (req, res) => {
+    const userId = req.params.id;
+    const currUserId = req.body.userId;
+    // console.log(userId,currUserId+"from followFun")
+    if (userId !== currUserId) {
+        try {
+            const followUser = await UserModel.findById(userId);
+            const followingUser = await UserModel.findById(currUserId);
+
+            if (!followUser.followers.includes(currUserId)) {
+                await followUser.updateOne({ $push: { followers: currUserId } })
+
+                await followingUser.updateOne({ $push: { following: userId } })
+
+                res.send({ message: "User Followed." })
+            }
+        } catch (error) {
+            res.send({ message: error })
+        }
+
+    } else {
+        res.send({ message: "Action Forbidden." })
+    }
+}
+
+const unFollowUser = async (req, res) => {
+    const userId = req.params.id;
+    const currUserId = req.body.userId;
+
+    if (userId !== currUserId) {
+        try {
+            const followUser = await UserModel.findById(userId);
+            const followingUser = await UserModel.findById(currUserId);
+
+            if (followUser.followers.includes(currUserId)) {
+                await followUser.updateOne({ $pull: { followers: currUserId } });
+                await followingUser.updateOne({ $pull: { following: userId } });
+
+                res.send({ message: "User UnFollowed." })
+            }
+
+        } catch (error) {
+            res.send({ message: error.message })
+        }
+    } else {
+        res.send({ message: "Action Forbidden." })
+    }
+}
 
 
-//         let user = await UserModel.findById(id);
-//         if (id === req.body.userId || user._doc.role === "admin") {
-//             await UserModel.findByIdAndUpdate(id, { avatar: urls[0]?.url }, { new: true });
-//             res.send({ message: "User Profile Updated" });
-//         } else {
-//             res.send({ message: "User not Authorised." });
-//         }
-//     } catch (error) {
-//         res.send({ message: error });
-//     }
-// }
 
 
 module.exports = {
     getUserById,
     updateUser,
     deleteUser,
+    followUser,
+    unFollowUser,
     // updateProfilePic
 }

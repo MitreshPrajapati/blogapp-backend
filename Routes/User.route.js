@@ -1,6 +1,6 @@
 const express = require('express');
 const { Router } = require('express');
-const { getUserById, updateUser, deleteUser, updateProfilePic } = require('../Controller/UserController');
+const { getUserById, updateUser, deleteUser, followUser, unFollowUser } = require('../Controller/UserController');
 const { authentication } = require('../Middlewares/authentication');
 const { UserModel } = require('../Models/User.model');
 
@@ -17,7 +17,7 @@ userRouter.get('/', async (req, res) => {
 //     try {
 //         const uploader = async (path) => await cloudinary.uploads(path, 'Images');
 //         let urls = [];
-        
+
 //         const files = req.files;
 //         for (const file in files) {
 //             const { path } = file;
@@ -29,7 +29,7 @@ userRouter.get('/', async (req, res) => {
 //         // res.send(urls)
 //         let user = await UserModel.findById(id);
 //         if (id === req.body.userId || user._doc.role === "admin") {
-            
+
 //             req.body.avatar = urls[0]?.url;
 //             await UserModel.findByIdAndUpdate(id, req.body, { new: true });
 //             res.send({ message: "User Profile Updated" });
@@ -41,8 +41,10 @@ userRouter.get('/', async (req, res) => {
 //     }
 // } )
 
-userRouter.get('/:id',authentication, getUserById)
-userRouter.delete('/:id',authentication, deleteUser);
-userRouter.patch('/:id',authentication, updateUser)
+userRouter.get('/:id', getUserById)
+userRouter.delete('/:id', deleteUser);
+userRouter.patch('/:id', updateUser);
+userRouter.put('/follow/:id', followUser);
+userRouter.put('/unfollow/:id', unFollowUser);
 
 module.exports = { userRouter }
